@@ -140,6 +140,6 @@ export const initializeAds = () => {
 // 타입 선언
 declare global {
   interface Window {
-    adsbygoogle: any[];
+    adsbygoogle: Array<Record<string, unknown>>;
   }
 }

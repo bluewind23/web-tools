@@ -46,6 +46,6 @@ export const trackEvent = (action: string, category: string, label?: string, val
 // 타입 선언
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
+    gtag: (...args: unknown[]) => void;
   }
 }

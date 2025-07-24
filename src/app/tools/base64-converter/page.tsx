@@ -323,11 +323,11 @@ export default function Base64ConverterPage() {
 
               {mode === 'decode' && imagePreview ? (
                 <div className="border border-gray-300 rounded-lg p-4 h-64 overflow-auto">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={imagePreview}
                     alt="Decoded"
                     className="max-w-full h-auto rounded"
-                    // eslint-disable-next-line @next/next/no-img-element
                   />
                 </div>
               ) : (

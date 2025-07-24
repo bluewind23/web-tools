@@ -532,9 +532,9 @@ export default function GifMakerPage() {
               <div className="bg-gray-50 p-3 rounded-lg"><div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2 max-h-64 overflow-y-auto">
                 {frames.map((frame, index) => (
                   <div key={frame.id} className="relative group">
-                    <div className="border rounded p-1 bg-white"><img src={frame.image} alt={`프레임 ${index + 1}`} className="w-full h-12 object-cover rounded" 
-                    // eslint-disable-next-line @next/next/no-img-element
-                    /><div className="text-xs text-center text-gray-500 mt-1">#{index + 1}</div></div>
+                    <div className="border rounded p-1 bg-white">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={frame.image} alt={`프레임 ${index + 1}`} className="w-full h-12 object-cover rounded" /><div className="text-xs text-center text-gray-500 mt-1">#{index + 1}</div></div>
                     <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100"><div className="flex space-x-1">
                       <button onClick={() => moveFrame(frame.id, 'up')} disabled={index === 0} className="w-5 h-5 bg-blue-500 text-white rounded text-xs" title="위로" aria-label={`프레임 ${index + 1}을 위로 이동`}>↑</button>
                       <button onClick={() => moveFrame(frame.id, 'down')} disabled={index === frames.length - 1} className="w-5 h-5 bg-blue-500 text-white rounded text-xs" title="아래로" aria-label={`프레임 ${index + 1}을 아래로 이동`}>↓</button>
@@ -560,9 +560,10 @@ export default function GifMakerPage() {
         {generatedGif && (
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4"><h2 className="text-xl font-semibold text-gray-900">🎉 완성된 GIF</h2><button onClick={downloadGif} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">💾 다운로드</button></div>
-            <div className="text-center"><img src={generatedGif} alt="Generated GIF" className="max-w-full h-auto rounded-lg shadow-lg mx-auto" 
-            // eslint-disable-next-line @next/next/no-img-element
-            /></div>
+            <div className="text-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={generatedGif} alt="Generated GIF" className="max-w-full h-auto rounded-lg shadow-lg mx-auto" />
+            </div>
           </div>
         )}
         {generatedGif && <ToolResultAd />}

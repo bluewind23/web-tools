@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import { ToolResultAd } from '@/components/AdBanner';
 
@@ -21,7 +21,7 @@ export default function IPCheckerPage() {
   const [customIPInfo, setCustomIPInfo] = useState<IPInfo | null>(null);
 
   // 내 IP 주소 가져오기
-  const fetchMyIP = async () => {
+  const fetchMyIP = useCallback(async () => {
     setLoading(true);
     try {
       // 여러 API를 시도해서 가장 빠른 것 사용
@@ -54,7 +54,7 @@ export default function IPCheckerPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // IP 세부정보 가져오기
   const fetchIPDetails = async (ip: string) => {

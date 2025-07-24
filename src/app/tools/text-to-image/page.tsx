@@ -1,10 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import { ToolResultAd } from '@/components/AdBanner';
-
-// metadata는 layout.tsx에서 관리됩니다
 
 interface TextStyle {
   fontSize: number;
@@ -106,7 +104,7 @@ export default function TextToImagePage() {
     }
   ];
 
-  const generateImage = () => {
+  const generateImage = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -124,30 +122,39 @@ export default function TextToImagePage() {
     ctx.fillStyle = style.color;
     ctx.textAlign = style.textAlign;
 
-    const lines = text.split('\n');
-  	const lineHeight = style.fontSize * style.lineHeight;
-    const totalTextHeight = (lines.length > 1) ? (lines.length - 1) * lineHeight : style.fontSize;
-    
-    const startY = (imageHeight - totalTextHeight) / 2 + (style.fontSize / 2);
+    // [수정된 코드 시작]
+    // 수직 정렬 기준을 'middle'로 설정하여 계산을 단순화하고 정확도를 높입니다.
+    ctx.textBaseline = 'middle';
 
+    const lines = text.split('\n');
+    const lineHeight = style.fontSize * style.lineHeight;
+
+    // 텍스트 블록의 전체 높이를 계산합니다.
+    const totalTextHeight = lines.length * lineHeight;
+    
+    // 텍스트 블록 전체를 수직 중앙에 배치하기 위한 시작 Y 좌표를 계산합니다.
+    const blockStartY = (imageHeight - totalTextHeight) / 2;
 
     let textX: number;
     if (style.textAlign === 'center') {
       textX = imageWidth / 2;
     } else if (style.textAlign === 'right') {
       textX = imageWidth - style.padding;
-    } else {
+    } else { // 'left'
       textX = style.padding;
     }
-
+    
+    // 각 줄을 정확한 위치에 그립니다.
     lines.forEach((line, index) => {
-      const y = startY + (index * lineHeight);
-      ctx.fillText(line, textX, y);
+      // 각 텍스트 줄의 수직 중앙 Y 좌표를 계산합니다.
+      const lineY = blockStartY + (index * lineHeight) + (lineHeight / 2);
+      ctx.fillText(line, textX, lineY);
     });
+    // [수정된 코드 끝]
 
     const dataURL = canvas.toDataURL(`image/${imageFormat}`, 0.95);
     setGeneratedImage(dataURL);
-  };
+  }, [imageWidth, imageHeight, style, text, imageFormat]); // generateImage가 의존하는 값들
 
   const downloadImage = () => {
     if (generatedImage) {
@@ -166,6 +173,7 @@ export default function TextToImagePage() {
         await navigator.clipboard.write([
           new ClipboardItem({ [blob.type]: blob })
         ]);
+        alert('이미지가 클립보드에 복사되었습니다.');
       } catch (error) {
         console.error('클립보드 복사 실패:', error);
         alert('브라우저에서 지원하지 않아 복사에 실패했습니다. 다운로드 기능을 이용해주세요.');
@@ -182,7 +190,7 @@ export default function TextToImagePage() {
       generateImage();
     }, 300);
     return () => clearTimeout(timer);
-  }, [text, imageWidth, imageHeight, style, imageFormat, generateImage]);
+  }, [generateImage]); // [수정] 의존성 배열에 memoization된 generateImage 함수를 사용합니다.
 
   const updateStyle = (key: keyof TextStyle, value: string | number) => {
     setStyle(prev => ({ ...prev, [key]: value }));
@@ -220,7 +228,10 @@ export default function TextToImagePage() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="변환할 텍스트를 입력하세요..."
-                className="w-full h-32 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none placeholder:text-gray-600 placeholder:opacity-100"
+                // [수정된 코드 시작]
+                // 입력된 텍스트는 진한 검은색(text-gray-900)으로, 플레이스홀더는 기존보다 진한 회색(placeholder:text-gray-700)으로 변경합니다.
+                className="w-full h-32 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-gray-900 placeholder:text-gray-700"
+                // [수정된 코드 끝]
               />
               <div className="text-xs text-gray-500 mt-2">
                 {text.split('\n').length}줄 • {text.length}글자

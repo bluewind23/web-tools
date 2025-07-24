@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import QRCode from 'qrcode';
 import ToolLayout from '@/components/ToolLayout';
 import { ToolResultAd } from '@/components/AdBanner';
@@ -28,7 +28,7 @@ export default function QRGeneratorPage() {
     trackEvent('page_view', 'tool_usage', 'qr_generator');
   }, []);
 
-  const generateQRCode = async () => {
+  const generateQRCode = useCallback(async () => {
     if (!text.trim()) {
       setQrCodeUrl('');
       return;
@@ -61,11 +61,11 @@ export default function QRGeneratorPage() {
     } finally {
       setIsGenerating(false);
     }
-  };
+  }, [text, options]);
 
   useEffect(() => {
     generateQRCode();
-  }, [text, options, generateQRCode]);
+  }, [generateQRCode]);
 
   const downloadQRCode = (format: 'png' | 'svg' = 'png') => {
     if (!canvasRef.current || !text.trim()) return;
