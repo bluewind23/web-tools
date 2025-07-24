@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Script from 'next/script';
 import ToolLayout from '@/components/ToolLayout';
 import { ToolResultAd } from '@/components/AdBanner';
 import { trackEvent } from '@/components/GoogleAnalytics';

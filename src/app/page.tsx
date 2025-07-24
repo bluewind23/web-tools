@@ -1,14 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import Script from 'next/script';
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { HeaderAd } from '@/components/AdBanner';
 import { trackEvent } from '@/components/GoogleAnalytics';
-import GoogleAnalyticsScript from '@/components/GoogleAnalyticsScript';
 import { tools, categories, getPopularTools, getToolsByCategory } from '@/data/tools';
 
 export default function Home() {

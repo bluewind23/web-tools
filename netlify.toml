@@ -1,0 +1,16 @@
+[build]
+  publish = ".next"
+  command = "npm run build"
+
+[build.environment]
+  NPM_FLAGS = "--production=false"
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# 빌드 타임아웃 설정 (기본값보다 길게)
+[build.processing]
+  skip_processing = false
