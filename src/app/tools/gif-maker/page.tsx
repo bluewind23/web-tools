@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import { ToolResultAd } from '@/components/AdBanner';
+import { trackEvent } from '@/components/GoogleAnalytics';
 import GIF from 'gif.js';
 
 // metadata는 layout.tsx에서 관리됩니다
@@ -37,6 +38,11 @@ export default function GifMakerPage() {
   const [isDragOver, setIsDragOver] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 페이지 방문 추적
+  useEffect(() => {
+    trackEvent('page_view', 'tool_usage', 'gif_maker');
+  }, []);
 
   // extractVideoFrames, addFramesFromFiles 등 다른 함수들은 변경 없이 그대로 유지됩니다.
   const extractVideoFrames = async (file: File): Promise<Frame[]> => {
@@ -227,6 +233,9 @@ export default function GifMakerPage() {
           setStatusMessage('GIF 생성 완료!');
           setGifProgress(100);
           setIsWorking(false);
+          
+          // Google Analytics 이벤트 추적
+          trackEvent('gif_created', 'tool_usage', 'gif_maker', frames.length);
         });
         gif.on('abort', () => {
           setStatusMessage('GIF 생성이 중단되었습니다.');

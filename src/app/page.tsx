@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { HeaderAd } from '@/components/AdBanner';
+import { trackEvent } from '@/components/GoogleAnalytics';
 import { tools, categories, getPopularTools, getToolsByCategory } from '@/data/tools';
 
 export default function Home() {
@@ -18,6 +19,16 @@ export default function Home() {
   const router = useRouter();
 
   const popularTools = getPopularTools();
+
+  // 페이지 방문 추적
+  useEffect(() => {
+    trackEvent('page_view', 'navigation', 'home_page');
+  }, []);
+
+  // 도구 클릭 추적 함수
+  const handleToolClick = (toolId: string) => {
+    trackEvent('tool_click', 'navigation', toolId);
+  };
 
   // 검색 결과 필터링
   const searchResults = tools.filter(tool => {
@@ -103,6 +114,7 @@ export default function Home() {
   };
 
   const handleSearchResultClick = (tool: typeof tools[0]) => {
+    trackEvent('search_result_click', 'navigation', tool.id);
     router.push(tool.href);
     setShowSearchResults(false);
     setSelectedSearchIndex(-1);
@@ -199,6 +211,7 @@ export default function Home() {
                 <Link
                   key={tool.id}
                   href={tool.href}
+                  onClick={() => handleToolClick(tool.id)}
                   className="group bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 hover:border-blue-200"
                 >
                   <div className="flex items-start space-x-4">
@@ -262,6 +275,7 @@ export default function Home() {
                 <Link
                   key={tool.id}
                   href={tool.href}
+                  onClick={() => handleToolClick(tool.id)}
                   className="group bg-white rounded-lg p-5 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-blue-200"
                 >
                   <div className="text-center">

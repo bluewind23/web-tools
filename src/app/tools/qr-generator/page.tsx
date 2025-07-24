@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
 import ToolLayout from '@/components/ToolLayout';
 import { ToolResultAd } from '@/components/AdBanner';
+import { trackEvent } from '@/components/GoogleAnalytics';
 
 // metadata는 layout.tsx에서 관리됩니다
 
@@ -21,6 +22,11 @@ export default function QRGeneratorPage() {
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // 페이지 방문 추적
+  useEffect(() => {
+    trackEvent('page_view', 'tool_usage', 'qr_generator');
+  }, []);
 
   const generateQRCode = async () => {
     if (!text.trim()) {
@@ -47,6 +53,9 @@ export default function QRGeneratorPage() {
           color: options.color
         });
       }
+      
+      // Google Analytics 이벤트 추적
+      trackEvent('qr_generated', 'tool_usage', 'qr_generator', text.length);
     } catch (error) {
       console.error('QR 코드 생성 오류:', error);
     } finally {

@@ -1,30 +1,47 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
+const ADSENSE_CLIENT_ID = 'ca-pub-5809883478660758';
 
 interface AdBannerProps {
   slot: string;
   format?: 'auto' | 'rectangle' | 'vertical' | 'horizontal';
   responsive?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export default function AdBanner({ 
   slot, 
   format = 'auto', 
   responsive = true, 
-  className = '' 
+  className = '',
+  style = {}
 }: AdBannerProps) {
+  const adRef = useRef<HTMLModElement>(null);
+  const isLoaded = useRef(false);
+
   useEffect(() => {
-    try {
-      // AdSense 광고 로드 (실제 운영시에는 Google AdSense 코드 사용)
-      if (typeof window !== 'undefined' && (window as typeof window & { adsbygoogle?: unknown[] }).adsbygoogle) {
-        const adsbygoogle = (window as typeof window & { adsbygoogle: unknown[] }).adsbygoogle;
-        (adsbygoogle || []).push({});
+    const loadAd = () => {
+      if (isLoaded.current) return;
+      
+      try {
+        if (typeof window !== 'undefined' && window.adsbygoogle && adRef.current) {
+          window.adsbygoogle.push({});
+          isLoaded.current = true;
+        }
+      } catch (error) {
+        console.error('AdSense 로딩 오류:', error);
       }
-    } catch (error) {
-      console.error('Ad loading error:', error);
-    }
+    };
+
+    // 컴포넌트가 마운트된 후 광고 로드
+    const timer = setTimeout(loadAd, 100);
+    
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   // 개발 환경에서는 플레이스홀더 표시
@@ -34,8 +51,9 @@ export default function AdBanner({
     return (
       <div className={`bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center min-h-[100px] ${className}`}>
         <div className="text-gray-500 text-sm">
-          <div className="text-xs mb-1">광고 영역</div>
-          <div className="text-xs opacity-60">AdSense Slot: {slot}</div>
+          <div className="text-xs mb-1">📢 광고 영역</div>
+          <div className="text-xs opacity-60">AdSense Client: {ADSENSE_CLIENT_ID}</div>
+          <div className="text-xs opacity-60">Slot: {slot}</div>
           <div className="text-xs opacity-60">Format: {format}</div>
           {responsive && <div className="text-xs opacity-60">Responsive: Yes</div>}
         </div>
@@ -43,20 +61,18 @@ export default function AdBanner({
     );
   }
 
-  // [추가] 환경 변수에서 클라이언트 ID 가져오기
-  const adClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
-
-  // [추가] 클라이언트 ID가 없으면 광고를 렌더링하지 않음
-  if (!adClient) {
-    return null; // 또는 개발 환경과 동일한 플레이스홀더 표시
-  }
+  const defaultStyle = {
+    display: 'block',
+    ...style
+  };
 
   return (
     <div className={`ad-container min-h-[100px] ${className}`}>
       <ins
+        ref={adRef}
         className="adsbygoogle"
-        style={{ display: 'block' }}
-        data-ad-client={adClient} // [수정] 환경 변수 사용
+        style={defaultStyle}
+        data-ad-client={ADSENSE_CLIENT_ID}
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive={responsive ? 'true' : 'false'}
@@ -65,15 +81,22 @@ export default function AdBanner({
   );
 }
 
-// 사전 정의된 광고 슬롯들
+// 타입 선언
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
+}
+
+// 사전 정의된 광고 슬롯들 (실제 AdSense에서 생성한 슬롯 ID로 교체 필요)
 export const AdSlots = {
-  HEADER_BANNER: 'header-banner',
-  CONTENT_TOP: 'content-top', 
-  CONTENT_BOTTOM: 'content-bottom',
-  SIDEBAR: 'sidebar',
-  TOOL_RESULT: 'tool-result',
-  FOOTER_BANNER: 'footer-banner',
-  MOBILE_BANNER: 'mobile-banner'
+  HEADER_BANNER: '1234567890',      // 헤더 배너 광고
+  CONTENT_TOP: '1234567891',        // 콘텐츠 상단 광고  
+  CONTENT_BOTTOM: '1234567892',     // 콘텐츠 하단 광고
+  SIDEBAR: '1234567893',            // 사이드바 광고
+  TOOL_RESULT: '1234567894',        // 도구 결과 광고
+  FOOTER_BANNER: '1234567895',      // 푸터 배너 광고
+  MOBILE_BANNER: '1234567896'       // 모바일 배너 광고
 } as const;
 
 // 광고 배치를 위한 헬퍼 컴포넌트들
