@@ -1,0 +1,96 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Sans_KR, Nanum_Gothic, Montserrat, Lato } from "next/font/google";
+import "./globals.css";
+
+
+// 중복 메타데이터 제거됨 - 아래 더 완전한 메타데이터 사용
+
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+// [추가] Google Fonts 불러오기
+const notoSansKr = Noto_Sans_KR({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-noto-sans-kr',
+});
+
+const nanumGothic = Nanum_Gothic({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-nanum-gothic',
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+});
+
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-lato',
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: "WebTools - 무료 웹 도구 모음",
+    template: "%s | WebTools"
+  },
+  description: "일상에서 유용한 웹 도구들을 무료로 제공합니다. 글자 수 세기, GIF 제작, QR 코드 생성, Base64 변환, 컬러 변환, 단위 변환 등 다양한 유틸리티를 만나보세요.",
+  keywords: ["웹도구", "무료도구", "유틸리티", "글자수세기", "QR코드", "Base64", "컬러변환", "시간계산", "GIF제작", "HTML편집기", "IP확인", "단위변환", "이모지", "텍스트이미지"],
+  authors: [{ name: "WebTools" }],
+  creator: "WebTools",
+  icons: {
+    icon: '/favicon.ico',
+  },
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: "https://webtools.com",
+    siteName: "WebTools",
+    title: "WebTools - 무료 웹 도구 모음",
+    description: "일상에서 유용한 웹 도구들을 무료로 제공합니다. 설치 없이 바로 사용 가능한 온라인 유틸리티입니다.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WebTools - 무료 웹 도구 모음",
+    description: "일상에서 유용한 웹 도구들을 무료로 제공합니다.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="ko">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${notoSansKr.variable} ${nanumGothic.variable} ${montserrat.variable} ${lato.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
+  );
+}
