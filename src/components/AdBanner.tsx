@@ -88,16 +88,18 @@ declare global {
   }
 }
 
+// [수정 또는 추가할 코드 시작]
 // 사전 정의된 광고 슬롯들 (실제 AdSense에서 생성한 슬롯 ID로 교체 필요)
 export const AdSlots = {
-  HEADER_BANNER: '1234567890',      // 헤더 배너 광고
-  CONTENT_TOP: '1234567891',        // 콘텐츠 상단 광고  
-  CONTENT_BOTTOM: '1234567892',     // 콘텐츠 하단 광고
-  SIDEBAR: '1234567893',            // 사이드바 광고
-  TOOL_RESULT: '1234567894',        // 도구 결과 광고
-  FOOTER_BANNER: '1234567895',      // 푸터 배너 광고
-  MOBILE_BANNER: '1234567896'       // 모바일 배너 광고
+  HEADER_BANNER: '실제_헤더_배너_슬롯_ID',      // 예: '1234567890'
+  CONTENT_TOP: '실제_콘텐츠_상단_슬롯_ID',        
+  CONTENT_BOTTOM: '실제_콘텐츠_하단_슬롯_ID',     
+  SIDEBAR: '실제_사이드바_슬롯_ID',            
+  TOOL_RESULT: '실제_도구_결과_슬롯_ID',        // 예: '1234567894'
+  FOOTER_BANNER: '실제_푸터_배너_슬롯_ID',      
+  MOBILE_BANNER: '실제_모바일_배너_슬롯_ID'       
 } as const;
+// [수정 또는 추가할 코드 끝]
 
 // 광고 배치를 위한 헬퍼 컴포넌트들
 export function HeaderAd() {
