@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { tools, categories } from '@/data/tools';
+import { tools } from '@/data/tools';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

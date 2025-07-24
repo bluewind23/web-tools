@@ -49,7 +49,7 @@ export default function IPCheckerPage() {
           continue;
         }
       }
-    } catch (error) {
+    } catch {
       setIpInfo({ ip: '조회 실패' });
     } finally {
       setLoading(false);
@@ -101,7 +101,7 @@ export default function IPCheckerPage() {
       } else {
         setCustomIPInfo({ ip: '조회 실패' });
       }
-    } catch (error) {
+    } catch {
       setCustomIPInfo({ ip: '조회 실패' });
     } finally {
       setLoading(false);
@@ -111,7 +111,7 @@ export default function IPCheckerPage() {
   // 페이지 로드시 내 IP 자동 조회
   useEffect(() => {
     fetchMyIP();
-  }, []);
+  }, [fetchMyIP]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);

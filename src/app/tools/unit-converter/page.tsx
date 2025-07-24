@@ -4,7 +4,21 @@ import { useState, useMemo } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import { ToolResultAd } from '@/components/AdBanner';
 
-const unitData = {
+interface UnitInfo {
+  value: number | string;
+  label: string;
+  short: string;
+}
+
+interface UnitCategory {
+  name: string;
+  icon: string;
+  baseUnit: string;
+  units: Record<string, UnitInfo>;
+  common: string[];
+}
+
+const unitData: Record<string, UnitCategory> = {
   length: {
     name: '길이',
     icon: '📏',
@@ -124,8 +138,8 @@ export default function UnitConverterPage() {
       else if (to === 'k') result = celsius + 273.15;
       else result = celsius;
     } else {
-      const fromRate = (unitData[cat].units as any)[from].value;
-      const toRate = (unitData[cat].units as any)[to].value;
+      const fromRate = unitData[cat].units[from].value as number;
+      const toRate = unitData[cat].units[to].value as number;
       const baseValue = numVal * fromRate;
       result = baseValue / toRate;
     }
@@ -168,16 +182,16 @@ export default function UnitConverterPage() {
         else if (unit === 'k') result = celsius + 273.15;
         else result = celsius;
       } else {
-        const fromRate = (unitData[category].units as any)[fromUnit].value;
-        const toRate = (unitData[category].units as any)[unit].value;
+        const fromRate = unitData[category].units[fromUnit].value as number;
+        const toRate = unitData[category].units[unit].value as number;
         const baseValue = numVal * fromRate;
         result = baseValue / toRate;
       }
       
       const formattedResult = Number(result.toPrecision(8)).toLocaleString();
       conversions.push({
-        unit: (data as any).short,
-        label: (data as any).label,
+        unit: data.short,
+        label: data.label,
         value: formattedResult
       });
     });
@@ -287,8 +301,8 @@ export default function UnitConverterPage() {
                             : 'border-gray-200 hover:border-gray-300 text-gray-800'
                         }`}
                       >
-                        <div className="font-bold text-sm">{(unitData[category].units as any)[unit].short}</div>
-                        <div className="text-xs font-medium">{(unitData[category].units as any)[unit].label}</div>
+                        <div className="font-bold text-sm">{unitData[category].units[unit].short}</div>
+                        <div className="text-xs font-medium">{unitData[category].units[unit].label}</div>
                       </button>
                     ))}
                   </div>
@@ -304,7 +318,7 @@ export default function UnitConverterPage() {
                   >
                     {Object.entries(currentUnits).map(([unit, data]) => (
                       <option key={unit} value={unit}>
-                        {(data as any).label} ({(data as any).short})
+                        {data.label} ({data.short})
                       </option>
                     ))}
                   </select>
@@ -362,8 +376,8 @@ export default function UnitConverterPage() {
                             : 'border-gray-200 hover:border-gray-300 text-gray-800'
                         }`}
                       >
-                        <div className="font-bold text-sm">{(unitData[category].units as any)[unit].short}</div>
-                        <div className="text-xs font-medium">{(unitData[category].units as any)[unit].label}</div>
+                        <div className="font-bold text-sm">{unitData[category].units[unit].short}</div>
+                        <div className="text-xs font-medium">{unitData[category].units[unit].label}</div>
                       </button>
                     ))}
                   </div>
@@ -379,7 +393,7 @@ export default function UnitConverterPage() {
                   >
                     {Object.entries(currentUnits).map(([unit, data]) => (
                       <option key={unit} value={unit}>
-                        {(data as any).label} ({(data as any).short})
+                        {data.label} ({data.short})
                       </option>
                     ))}
                   </select>
@@ -391,7 +405,7 @@ export default function UnitConverterPage() {
           {/* 복사 버튼 */}
           <div className="mt-6 text-center">
             <button
-              onClick={() => navigator.clipboard.writeText(`${fromValue} ${(unitData[category].units as any)[fromUnit].short} = ${toValue} ${(unitData[category].units as any)[toUnit].short}`)}
+              onClick={() => navigator.clipboard.writeText(`${fromValue} ${unitData[category].units[fromUnit].short} = ${toValue} ${unitData[category].units[toUnit].short}`)}
               className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
             >
               📋 결과 복사
@@ -404,7 +418,7 @@ export default function UnitConverterPage() {
           <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <span className="mr-2">📊</span>
-              {fromValue} {(unitData[category].units as any)[fromUnit].label}({(unitData[category].units as any)[fromUnit].short}) 단위 변환 결과
+              {fromValue} {unitData[category].units[fromUnit].label}({unitData[category].units[fromUnit].short}) 단위 변환 결과
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {getAllConversions().map((conversion, index) => (

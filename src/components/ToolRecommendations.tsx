@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getRandomTools, getPopularTools } from '@/data/tools';
+import { getRandomTools, getPopularTools, Tool } from '@/data/tools';
 
 interface ToolRecommendationsProps {
   currentToolId?: string;
@@ -19,7 +19,7 @@ export default function ToolRecommendations({
   title,
   className = ''
 }: ToolRecommendationsProps) {
-  const [recommendedTools, setRecommendedTools] = useState<any[]>([]);
+  const [recommendedTools, setRecommendedTools] = useState<Tool[]>([]);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -135,7 +135,7 @@ export function RandomToolsRecommendation({ currentToolId, className }: {
 }
 
 export function CompactToolsRecommendation({ currentToolId }: { currentToolId?: string }) {
-  const [tools, setTools] = useState<any[]>([]);
+  const [tools, setTools] = useState<Tool[]>([]);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {

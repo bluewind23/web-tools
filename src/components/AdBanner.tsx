@@ -18,8 +18,9 @@ export default function AdBanner({
   useEffect(() => {
     try {
       // AdSense 광고 로드 (실제 운영시에는 Google AdSense 코드 사용)
-      if (typeof window !== 'undefined' && (window as any).adsbygoogle) {
-        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+      if (typeof window !== 'undefined' && (window as typeof window & { adsbygoogle?: unknown[] }).adsbygoogle) {
+        const adsbygoogle = (window as typeof window & { adsbygoogle: unknown[] }).adsbygoogle;
+        (adsbygoogle || []).push({});
       }
     } catch (error) {
       console.error('Ad loading error:', error);

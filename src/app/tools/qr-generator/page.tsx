@@ -56,7 +56,7 @@ export default function QRGeneratorPage() {
 
   useEffect(() => {
     generateQRCode();
-  }, [text, options]);
+  }, [text, options, generateQRCode]);
 
   const downloadQRCode = (format: 'png' | 'svg' = 'png') => {
     if (!canvasRef.current || !text.trim()) return;
@@ -290,6 +290,7 @@ export default function QRGeneratorPage() {
                 </div>
               ) : qrCodeUrl ? (
                 <div className="bg-gray-100 rounded-lg p-6">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={qrCodeUrl}
                     alt="Generated QR Code"

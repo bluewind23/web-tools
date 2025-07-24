@@ -88,7 +88,7 @@ export default function Base64ConverterPage() {
         const encoded = btoa(binaryString);
         setOutput(encoded);
       }
-    } catch (error) {
+    } catch {
       setOutput('인코딩 오류: 올바른 텍스트를 입력해주세요.');
     }
   };
@@ -119,7 +119,7 @@ export default function Base64ConverterPage() {
           setOutput(decoded);
         }
       }
-    } catch (error) {
+    } catch {
       setOutput('디코딩 오류: 올바른 Base64 문자열을 입력해주세요.');
     }
   };
@@ -327,6 +327,7 @@ export default function Base64ConverterPage() {
                     src={imagePreview}
                     alt="Decoded"
                     className="max-w-full h-auto rounded"
+                    // eslint-disable-next-line @next/next/no-img-element
                   />
                 </div>
               ) : (

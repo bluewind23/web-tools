@@ -178,7 +178,7 @@ export default function Home() {
                     <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50">
                       <div className="px-4 py-6 text-center text-gray-500">
                         <span className="text-2xl mb-2 block">🔍</span>
-                        <div className="text-sm">'{searchQuery}'에 대한 검색 결과가 없습니다.</div>
+                        <div className="text-sm">&apos;{searchQuery}&apos;에 대한 검색 결과가 없습니다.</div>
                       </div>
                     </div>
                   )}
