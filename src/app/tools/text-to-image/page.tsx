@@ -218,7 +218,7 @@ export default function TextToImagePage() {
     }
   };
 
-  const applyPreset = (presetStyle: any) => {
+  const applyPreset = (presetStyle: TextStyle) => {
     setStyle(presetStyle);
   };
 
