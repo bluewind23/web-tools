@@ -3,7 +3,6 @@ import Header from './Header';
 import Footer from './Footer';
 import { ContentBottomAd } from './AdBanner';
 import { RandomToolsRecommendation } from './ToolRecommendations';
-import AdSenseScript from './AdSenseScript';
 import GoogleAnalyticsScript from './GoogleAnalyticsScript';
 
 interface ToolLayoutProps {
@@ -22,7 +21,6 @@ export default function ToolLayout({
   return (
     <>
       <GoogleAnalyticsScript />
-      <AdSenseScript />
       <div className="min-h-screen bg-gray-50">
         <Header />
         

@@ -13,14 +13,18 @@ export default function GoogleAdSense() {
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
-      <Script id="adsense-auto-ads" strategy="afterInteractive">
-        {`
-          (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "${ADSENSE_PUBLISHER_ID}",
-            enable_page_level_ads: true
-          });
-        `}
-      </Script>
+      <Script 
+        id="adsense-auto-ads" 
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "${ADSENSE_PUBLISHER_ID}",
+              enable_page_level_ads: true
+            });
+          `
+        }}
+      />
     </>
   );
 }
@@ -128,9 +132,10 @@ export function MobileBannerAd({
 
 // 광고 초기화 함수
 export const initializeAds = () => {
-  if (typeof window !== 'undefined' && window.adsbygoogle) {
+  if (typeof window !== 'undefined') {
     try {
-      window.adsbygoogle.push({});
+      // adsbygoogle 배열이 존재하는지 확인
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (error) {
       console.error('AdSense 초기화 오류:', error);
     }
