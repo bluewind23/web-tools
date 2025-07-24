@@ -28,8 +28,12 @@ export default function AdBanner({
       
       try {
         if (typeof window !== 'undefined' && window.adsbygoogle && adRef.current) {
-          window.adsbygoogle.push({});
-          isLoaded.current = true;
+          // 광고가 이미 초기화되었는지 확인
+          const adElement = adRef.current;
+          if (adElement && !adElement.getAttribute('data-adsbygoogle-status')) {
+            window.adsbygoogle.push({});
+            isLoaded.current = true;
+          }
         }
       } catch (error) {
         console.error('AdSense 로딩 오류:', error);

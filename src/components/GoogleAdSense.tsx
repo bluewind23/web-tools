@@ -13,14 +13,8 @@ export default function GoogleAdSense() {
       <script 
         dangerouslySetInnerHTML={{
           __html: `
-            // 중복 실행 방지
-            if (!window.adsensePageLevelAdsInitialized) {
-              (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "${ADSENSE_PUBLISHER_ID}",
-                enable_page_level_ads: true
-              });
-              window.adsensePageLevelAdsInitialized = true;
-            }
+            // AdSense 초기화
+            window.adsbygoogle = window.adsbygoogle || [];
           `
         }}
       />
@@ -145,6 +139,5 @@ export const initializeAds = () => {
 declare global {
   interface Window {
     adsbygoogle: Array<Record<string, unknown>>;
-    adsensePageLevelAdsInitialized?: boolean;
   }
 }
