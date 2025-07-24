@@ -1,27 +1,26 @@
 'use client';
 
-import Script from 'next/script';
-
 const ADSENSE_PUBLISHER_ID = 'ca-pub-5809883478660758';
 
 export default function GoogleAdSense() {
   return (
     <>
-      <Script
+      <script
         async
         src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
         crossOrigin="anonymous"
-        strategy="afterInteractive"
       />
-      <Script 
-        id="adsense-auto-ads" 
-        strategy="afterInteractive"
+      <script 
         dangerouslySetInnerHTML={{
           __html: `
-            (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "${ADSENSE_PUBLISHER_ID}",
-              enable_page_level_ads: true
-            });
+            // 중복 실행 방지
+            if (!window.adsensePageLevelAdsInitialized) {
+              (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "${ADSENSE_PUBLISHER_ID}",
+                enable_page_level_ads: true
+              });
+              window.adsensePageLevelAdsInitialized = true;
+            }
           `
         }}
       />
@@ -146,5 +145,6 @@ export const initializeAds = () => {
 declare global {
   interface Window {
     adsbygoogle: Array<Record<string, unknown>>;
+    adsensePageLevelAdsInitialized?: boolean;
   }
 }
