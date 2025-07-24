@@ -10,7 +10,8 @@ interface TextStyle {
   color: string;
   backgroundColor: string;
   textAlign: 'left' | 'center' | 'right';
-  fontWeight: 'normal' | 'bold';
+  // [수정] 폰트 굵기를 숫자와 문자열 모두 받을 수 있도록 변경
+  fontWeight: 'normal' | 'bold' | number;
   fontStyle: 'normal' | 'italic';
   padding: number;
   lineHeight: number;
@@ -35,14 +36,30 @@ export default function TextToImagePage() {
   const [imageFormat, setImageFormat] = useState<'png' | 'jpeg'>('png');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // [수정] 다양한 폰트 목록 추가
   const fontFamilies = [
     { name: 'Noto Sans KR (한글)', value: 'var(--font-noto-sans-kr)' },
     { name: '나눔고딕 (한글)', value: 'var(--font-nanum-gothic)' },
+    { name: '도현 (한글)', value: 'var(--font-do-hyeon)' },
+    { name: 'Gothic A1 (한글)', value: 'var(--font-gothic-a1)' },
+    { name: 'Roboto (영문)', value: 'var(--font-roboto)' },
     { name: 'Montserrat (영문)', value: 'var(--font-montserrat)' },
     { name: 'Lato (영문)', value: 'var(--font-lato)' },
+    { name: 'Open Sans (영문)', value: 'var(--font-open-sans)' },
     { name: 'Arial', value: 'Arial' },
     { name: 'Georgia', value: 'Georgia' },
     { name: 'Impact', value: 'Impact' },
+  ];
+
+  // [수정] 다양한 폰트 굵기 옵션 추가
+  const fontWeights = [
+    { name: 'Light (300)', value: 300 },
+    { name: '보통 (400)', value: 'normal' },
+    { name: 'Medium (500)', value: 500 },
+    { name: 'Semi-bold (600)', value: 600 },
+    { name: '굵게 (700)', value: 'bold' },
+    { name: 'Extra-bold (800)', value: 800 },
+    { name: 'Black (900)', value: 900 },
   ];
 
   const presetStyles = [
@@ -64,11 +81,11 @@ export default function TextToImagePage() {
       name: '제목',
       style: {
         fontSize: 60,
-        fontFamily: 'var(--font-nanum-gothic)',
+        fontFamily: 'var(--font-do-hyeon)',
         color: '#2c3e50',
         backgroundColor: '#ecf0f1',
         textAlign: 'center' as const,
-        fontWeight: 'bold' as const,
+        fontWeight: 'normal' as const,
         fontStyle: 'normal' as const,
         padding: 60,
         lineHeight: 1.2
@@ -78,11 +95,11 @@ export default function TextToImagePage() {
       name: '인용구',
       style: {
         fontSize: 32,
-        fontFamily: 'Georgia',
+        fontFamily: 'var(--font-gothic-a1)',
         color: '#34495e',
         backgroundColor: '#f8f9fa',
         textAlign: 'center' as const,
-        fontWeight: 'normal' as const,
+        fontWeight: 300,
         fontStyle: 'italic' as const,
         padding: 50,
         lineHeight: 1.6
@@ -96,7 +113,7 @@ export default function TextToImagePage() {
         color: '#ffffff',
         backgroundColor: '#e74c3c',
         textAlign: 'center' as const,
-        fontWeight: 'bold' as const,
+        fontWeight: 900,
         fontStyle: 'normal' as const,
         padding: 45,
         lineHeight: 1.3
@@ -104,8 +121,6 @@ export default function TextToImagePage() {
     }
   ];
 
-  // [수정된 코드 시작]
-  // 캔버스가 이해할 수 있도록 CSS 변수를 실제 폰트 이름으로 변환하는 함수
   const resolveFontFamily = (fontValue: string): string => {
     switch (fontValue) {
       case 'var(--font-noto-sans-kr)':
@@ -116,12 +131,19 @@ export default function TextToImagePage() {
         return 'Montserrat, sans-serif';
       case 'var(--font-lato)':
         return 'Lato, sans-serif';
+      // [수정] 새로 추가된 폰트 변환 로직
+      case 'var(--font-do-hyeon)':
+        return '"Do Hyeon", sans-serif';
+      case 'var(--font-gothic-a1)':
+        return '"Gothic A1", sans-serif';
+      case 'var(--font-roboto)':
+        return 'Roboto, sans-serif';
+      case 'var(--font-open-sans)':
+        return '"Open Sans", sans-serif';
       default:
-        // 'Arial', 'Georgia' 등 CSS 변수가 아닌 경우는 그대로 반환
         return fontValue;
     }
   };
-  // [수정된 코드 끝]
 
   const generateImage = useCallback(() => {
     const canvas = canvasRef.current;
@@ -140,12 +162,9 @@ export default function TextToImagePage() {
     ctx.fillStyle = style.backgroundColor;
     ctx.fillRect(0, 0, imageWidth, imageHeight);
 
-    // [수정된 코드 시작]
-    // 변환된 실제 폰트 이름을 사용하여 font 문자열을 생성합니다.
     const resolvedFontFamily = resolveFontFamily(style.fontFamily);
     const fontStyleStr = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${resolvedFontFamily}`;
-    // [수정된 코드 끝]
-    
+
     ctx.font = fontStyleStr;
     ctx.fillStyle = style.color;
     ctx.textAlign = style.textAlign;
@@ -164,7 +183,7 @@ export default function TextToImagePage() {
     } else {
       textX = style.padding;
     }
-    
+
     lines.forEach((line, index) => {
       const lineY = blockStartY + (index * lineHeight) + (lineHeight / 2);
       ctx.fillText(line, textX, lineY);
@@ -199,12 +218,11 @@ export default function TextToImagePage() {
     }
   };
 
-  const applyPreset = (presetStyle: TextStyle) => {
+  const applyPreset = (presetStyle: any) => {
     setStyle(presetStyle);
   };
 
   useEffect(() => {
-    // 폰트가 로드될 시간을 주기 위해 약간의 딜레이 후 이미지를 생성합니다.
     const timer = setTimeout(() => {
       generateImage();
     }, 300);
@@ -212,7 +230,9 @@ export default function TextToImagePage() {
   }, [generateImage]);
 
   const updateStyle = (key: keyof TextStyle, value: string | number) => {
-    setStyle(prev => ({ ...prev, [key]: value }));
+    // 폰트 굵기 값은 숫자일 수 있으므로 변환하지 않음
+    const processedValue = key === 'fontWeight' ? value : typeof value === 'string' && !isNaN(parseFloat(value)) ? parseFloat(value) : value;
+    setStyle(prev => ({ ...prev, [key]: processedValue }));
   };
 
   return (
@@ -266,7 +286,7 @@ export default function TextToImagePage() {
                   >
                     <div className="font-medium text-gray-900">{preset.name}</div>
                     <div className="text-sm text-gray-500">
-                      {preset.style.fontSize}px {preset.style.fontFamily.includes('var') ? '한글폰트' : preset.style.fontFamily}
+                      {preset.style.fontSize}px {preset.style.fontFamily.includes('var') ? '커스텀 폰트' : preset.style.fontFamily}
                     </div>
                   </button>
                 ))}
@@ -346,9 +366,9 @@ export default function TextToImagePage() {
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-800 mb-2">정렬</label>
-                    <select 
-                      value={style.textAlign} 
-                      onChange={(e) => updateStyle('textAlign', e.target.value as 'left' | 'center' | 'right')} 
+                    <select
+                      value={style.textAlign}
+                      onChange={(e) => updateStyle('textAlign', e.target.value as 'left' | 'center' | 'right')}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 font-medium"
                     >
                       <option value="left">왼쪽</option>
@@ -358,20 +378,24 @@ export default function TextToImagePage() {
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-800 mb-2">굵기</label>
-                    <select 
-                      value={style.fontWeight} 
-                      onChange={(e) => updateStyle('fontWeight', e.target.value as 'normal' | 'bold')} 
+                    {/* [수정] 폰트 굵기 선택 UI 변경 */}
+                    <select
+                      value={style.fontWeight}
+                      onChange={(e) => updateStyle('fontWeight', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 font-medium"
                     >
-                      <option value="normal">보통</option>
-                      <option value="bold">굵게</option>
+                      {fontWeights.map((weight) => (
+                        <option key={weight.name} value={weight.value}>
+                          {weight.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-800 mb-2">스타일</label>
-                    <select 
-                      value={style.fontStyle} 
-                      onChange={(e) => updateStyle('fontStyle', e.target.value as 'normal' | 'italic')} 
+                    <select
+                      value={style.fontStyle}
+                      onChange={(e) => updateStyle('fontStyle', e.target.value as 'normal' | 'italic')}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 font-medium"
                     >
                       <option value="normal">보통</option>
@@ -416,7 +440,7 @@ export default function TextToImagePage() {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-semibold text-gray-800 mb-2">이미지 형식</label>
                   <select
@@ -428,7 +452,7 @@ export default function TextToImagePage() {
                     <option value="jpeg">JPEG (작은 파일 크기)</option>
                   </select>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-semibold text-gray-800 mb-2">
                     여백: {style.padding}px
@@ -452,21 +476,21 @@ export default function TextToImagePage() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-gray-900">👁️ 미리보기</h2>
                 <div className="flex space-x-2">
-                  <button 
-                    onClick={copyToClipboard} 
+                  <button
+                    onClick={copyToClipboard}
                     className="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded text-sm transition-colors"
                   >
                     📋 복사
                   </button>
-                  <button 
-                    onClick={downloadImage} 
+                  <button
+                    onClick={downloadImage}
                     className="px-3 py-1 text-green-600 hover:bg-green-50 rounded text-sm transition-colors"
                   >
                     💾 다운로드
                   </button>
                 </div>
               </div>
-              
+
               <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 overflow-auto flex justify-center items-center min-h-[400px]">
                 <canvas ref={canvasRef} style={{ display: 'none' }} />
                 {generatedImage ? (
