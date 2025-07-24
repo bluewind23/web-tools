@@ -104,6 +104,25 @@ export default function TextToImagePage() {
     }
   ];
 
+  // [수정된 코드 시작]
+  // 캔버스가 이해할 수 있도록 CSS 변수를 실제 폰트 이름으로 변환하는 함수
+  const resolveFontFamily = (fontValue: string): string => {
+    switch (fontValue) {
+      case 'var(--font-noto-sans-kr)':
+        return '"Noto Sans KR", sans-serif';
+      case 'var(--font-nanum-gothic)':
+        return '"Nanum Gothic", sans-serif';
+      case 'var(--font-montserrat)':
+        return 'Montserrat, sans-serif';
+      case 'var(--font-lato)':
+        return 'Lato, sans-serif';
+      default:
+        // 'Arial', 'Georgia' 등 CSS 변수가 아닌 경우는 그대로 반환
+        return fontValue;
+    }
+  };
+  // [수정된 코드 끝]
+
   const generateImage = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -111,28 +130,22 @@ export default function TextToImagePage() {
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
-    // [수정된 코드 시작]
-    // 고해상도(HiDPI, Retina) 디스플레이에서 이미지가 선명하게 나오도록 처리합니다.
     const dpr = window.devicePixelRatio || 1;
-
-    // 캔버스의 실제 픽셀 크기를 디스플레이 해상도에 맞게 설정합니다.
     canvas.width = imageWidth * dpr;
     canvas.height = imageHeight * dpr;
-    
-    // 캔버스 CSS 크기는 논리적 크기로 유지합니다 (이 코드에서는 canvas가 display:none이라 영향 없음).
     canvas.style.width = `${imageWidth}px`;
     canvas.style.height = `${imageHeight}px`;
-
-    // 캔버스 컨텍스트를 스케일링하여, 이후의 그리기 명령이 고해상도에 맞게 그려지도록 합니다.
     ctx.scale(dpr, dpr);
-    // [수정된 코드 끝]
-
-    // 이제부터 모든 그리기 연산(fillRect, fillText 등)은 dpr만큼 확대되어 고해상도로 렌더링됩니다.
 
     ctx.fillStyle = style.backgroundColor;
     ctx.fillRect(0, 0, imageWidth, imageHeight);
 
-    const fontStyleStr = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${style.fontFamily}`;
+    // [수정된 코드 시작]
+    // 변환된 실제 폰트 이름을 사용하여 font 문자열을 생성합니다.
+    const resolvedFontFamily = resolveFontFamily(style.fontFamily);
+    const fontStyleStr = `${style.fontStyle} ${style.fontWeight} ${style.fontSize}px ${resolvedFontFamily}`;
+    // [수정된 코드 끝]
+    
     ctx.font = fontStyleStr;
     ctx.fillStyle = style.color;
     ctx.textAlign = style.textAlign;
@@ -191,6 +204,7 @@ export default function TextToImagePage() {
   };
 
   useEffect(() => {
+    // 폰트가 로드될 시간을 주기 위해 약간의 딜레이 후 이미지를 생성합니다.
     const timer = setTimeout(() => {
       generateImage();
     }, 300);
