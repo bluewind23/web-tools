@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Script from 'next/script';
 import ToolLayout from '@/components/ToolLayout';
 import { ToolResultAd } from '@/components/AdBanner';
 import { trackEvent } from '@/components/GoogleAnalytics';
@@ -380,7 +381,14 @@ export default function GifMakerPage() {
   const downloadGif = () => { if (generatedGif) { const link = document.createElement('a'); link.href = generatedGif; link.download = `animated-gif-${Date.now()}.gif`; link.click(); } };
 
   return (
-    <ToolLayout toolId="gif-maker">
+    <>
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5809883478660758"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      <ToolLayout toolId="gif-maker">
       <div className="text-center mb-4">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">🎬 GIF 제작 툴</h1>
         <p className="text-lg text-gray-600 mb-6">이미지/비디오를 업로드하여 애니메이션 GIF 생성</p>
@@ -559,6 +567,7 @@ export default function GifMakerPage() {
         )}
         {generatedGif && <ToolResultAd />}
       </div>
-    </ToolLayout>
+      </ToolLayout>
+    </>
   );
 }

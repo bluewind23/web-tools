@@ -1,12 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import Script from 'next/script';
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { HeaderAd } from '@/components/AdBanner';
 import { trackEvent } from '@/components/GoogleAnalytics';
+import GoogleAnalyticsScript from '@/components/GoogleAnalyticsScript';
 import { tools, categories, getPopularTools, getToolsByCategory } from '@/data/tools';
 
 export default function Home() {
@@ -121,8 +123,16 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <>
+      <GoogleAnalyticsScript />
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5809883478660758"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      <div className="min-h-screen bg-gray-50">
+        <Header />
       
       <main>
         {/* 히어로 섹션 */}
@@ -333,7 +343,8 @@ export default function Home() {
         </section>
       </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 }
