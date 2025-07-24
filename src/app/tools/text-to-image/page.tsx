@@ -111,8 +111,23 @@ export default function TextToImagePage() {
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
-    canvas.width = imageWidth;
-    canvas.height = imageHeight;
+    // [수정된 코드 시작]
+    // 고해상도(HiDPI, Retina) 디스플레이에서 이미지가 선명하게 나오도록 처리합니다.
+    const dpr = window.devicePixelRatio || 1;
+
+    // 캔버스의 실제 픽셀 크기를 디스플레이 해상도에 맞게 설정합니다.
+    canvas.width = imageWidth * dpr;
+    canvas.height = imageHeight * dpr;
+    
+    // 캔버스 CSS 크기는 논리적 크기로 유지합니다 (이 코드에서는 canvas가 display:none이라 영향 없음).
+    canvas.style.width = `${imageWidth}px`;
+    canvas.style.height = `${imageHeight}px`;
+
+    // 캔버스 컨텍스트를 스케일링하여, 이후의 그리기 명령이 고해상도에 맞게 그려지도록 합니다.
+    ctx.scale(dpr, dpr);
+    // [수정된 코드 끝]
+
+    // 이제부터 모든 그리기 연산(fillRect, fillText 등)은 dpr만큼 확대되어 고해상도로 렌더링됩니다.
 
     ctx.fillStyle = style.backgroundColor;
     ctx.fillRect(0, 0, imageWidth, imageHeight);
@@ -121,18 +136,11 @@ export default function TextToImagePage() {
     ctx.font = fontStyleStr;
     ctx.fillStyle = style.color;
     ctx.textAlign = style.textAlign;
-
-    // [수정된 코드 시작]
-    // 수직 정렬 기준을 'middle'로 설정하여 계산을 단순화하고 정확도를 높입니다.
     ctx.textBaseline = 'middle';
 
     const lines = text.split('\n');
     const lineHeight = style.fontSize * style.lineHeight;
-
-    // 텍스트 블록의 전체 높이를 계산합니다.
     const totalTextHeight = lines.length * lineHeight;
-    
-    // 텍스트 블록 전체를 수직 중앙에 배치하기 위한 시작 Y 좌표를 계산합니다.
     const blockStartY = (imageHeight - totalTextHeight) / 2;
 
     let textX: number;
@@ -140,21 +148,18 @@ export default function TextToImagePage() {
       textX = imageWidth / 2;
     } else if (style.textAlign === 'right') {
       textX = imageWidth - style.padding;
-    } else { // 'left'
+    } else {
       textX = style.padding;
     }
     
-    // 각 줄을 정확한 위치에 그립니다.
     lines.forEach((line, index) => {
-      // 각 텍스트 줄의 수직 중앙 Y 좌표를 계산합니다.
       const lineY = blockStartY + (index * lineHeight) + (lineHeight / 2);
       ctx.fillText(line, textX, lineY);
     });
-    // [수정된 코드 끝]
 
     const dataURL = canvas.toDataURL(`image/${imageFormat}`, 0.95);
     setGeneratedImage(dataURL);
-  }, [imageWidth, imageHeight, style, text, imageFormat]); // generateImage가 의존하는 값들
+  }, [imageWidth, imageHeight, style, text, imageFormat]);
 
   const downloadImage = () => {
     if (generatedImage) {
@@ -190,7 +195,7 @@ export default function TextToImagePage() {
       generateImage();
     }, 300);
     return () => clearTimeout(timer);
-  }, [generateImage]); // [수정] 의존성 배열에 memoization된 generateImage 함수를 사용합니다.
+  }, [generateImage]);
 
   const updateStyle = (key: keyof TextStyle, value: string | number) => {
     setStyle(prev => ({ ...prev, [key]: value }));
@@ -228,10 +233,7 @@ export default function TextToImagePage() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="변환할 텍스트를 입력하세요..."
-                // [수정된 코드 시작]
-                // 입력된 텍스트는 진한 검은색(text-gray-900)으로, 플레이스홀더는 기존보다 진한 회색(placeholder:text-gray-700)으로 변경합니다.
                 className="w-full h-32 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-gray-900 placeholder:text-gray-700"
-                // [수정된 코드 끝]
               />
               <div className="text-xs text-gray-500 mt-2">
                 {text.split('\n').length}줄 • {text.length}글자
