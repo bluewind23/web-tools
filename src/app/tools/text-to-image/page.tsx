@@ -443,7 +443,7 @@ export default function TextToImagePage() {
               <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 overflow-auto flex justify-center items-center min-h-[400px]">
                 <canvas ref={canvasRef} style={{ display: 'none' }} />
                 {generatedImage ? (
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={generatedImage}
                     alt="Generated Text Image"
