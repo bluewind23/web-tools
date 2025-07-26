@@ -1,9 +1,14 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 import { tools, categories } from '@/data/tools';
+import ContactModal from './ContactModal';
 
 export default function Footer() {
   const popularTools = tools.filter(tool => tool.popular);
   const currentYear = new Date().getFullYear();
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   return (
     <footer className="bg-gray-50 border-t">
@@ -70,19 +75,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-gray-600 hover:text-blue-600 text-sm">
-                  개인정보처리방침
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-gray-600 hover:text-blue-600 text-sm">
-                  이용약관
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-gray-600 hover:text-blue-600 text-sm">
+                <button
+                  onClick={() => setIsContactModalOpen(true)}
+                  className="text-gray-600 hover:text-blue-600 text-sm text-left"
+                >
                   문의하기
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -103,6 +101,11 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      
+      <ContactModal 
+        isOpen={isContactModalOpen} 
+        onClose={() => setIsContactModalOpen(false)} 
+      />
     </footer>
   );
 }
