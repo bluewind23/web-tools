@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getContacts, updateContactStatus, deleteContact, getContactStats } from '@/lib/contacts';
 
+// Static export configuration for Netlify
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 // 간단한 인증 (실제 프로덕션에서는 더 강력한 인증 시스템 사용)
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 

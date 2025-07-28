@@ -53,6 +53,7 @@ export default function AdminPage() {
       setIsAuthenticated(true);
       fetchContacts(1, statusFilter, savedToken);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -76,7 +77,7 @@ export default function AdminPage() {
       } else {
         setAuthError(data.error);
       }
-    } catch (error) {
+    } catch {
       setAuthError('네트워크 오류가 발생했습니다.');
     }
   };
