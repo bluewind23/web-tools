@@ -1,15 +1,7 @@
-
-export const metadata = {
-  title: "IP 주소 확인기",
-  description: "현재 내 IP 주소를 실시간으로 확인할 수 있어요.",
-  openGraph: {
-    title: "IP 주소 확인기",
-    description: "현재 내 IP 주소를 실시간으로 확인할 수 있어요.",
-    images: ["/og-images/ip-checker.png"],
-  },
-};
-
 'use client';
+
+
+
 
 import { useState, useEffect, useCallback } from 'react';
 import ToolLayout from '@/components/ToolLayout';

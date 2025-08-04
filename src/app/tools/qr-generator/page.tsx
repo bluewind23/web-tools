@@ -1,15 +1,7 @@
-
-export const metadata = {
-  title: "QR 코드 생성기",
-  description: "귀여운 스타일의 QR 코드 생성기",
-  openGraph: {
-    title: "QR 코드 생성기",
-    description: "귀여운 스타일의 QR 코드 생성기",
-    images: ["/og-images/qr-generator.png"],
-  },
-};
-
 'use client';
+
+
+
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import QRCode from 'qrcode';

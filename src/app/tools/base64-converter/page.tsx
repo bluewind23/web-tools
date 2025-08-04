@@ -1,14 +1,6 @@
 'use client';
 
-export const metadata = {
-  title: "Base64 인코더/디코더",
-  description: "텍스트를 Base64로 변환하거나 해독하세요.",
-  openGraph: {
-    title: "Base64 인코더/디코더",
-    description: "텍스트를 Base64로 변환하거나 해독하세요.",
-    images: ["/og-images/base64-converter.png"],
-  },
-};
+
 
 import { useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';

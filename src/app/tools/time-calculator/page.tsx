@@ -1,15 +1,7 @@
-
-export const metadata = {
-  title: "시간 계산기",
-  description: "두 시간 간격 또는 더하기/빼기 계산 도구",
-  openGraph: {
-    title: "시간 계산기",
-    description: "두 시간 간격 또는 더하기/빼기 계산 도구",
-    images: ["/og-images/time-calculator.png"],
-  },
-};
-
 'use client';
+
+
+
 
 import { useState, useEffect } from 'react';
 import ToolLayout from '@/components/ToolLayout';

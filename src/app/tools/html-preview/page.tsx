@@ -1,14 +1,6 @@
 'use client';
 
-export const metadata = {
-  title: "HTML 미리보기 도구",
-  description: "HTML 코드를 실시간으로 미리보기 해보세요.",
-  openGraph: {
-    title: "HTML 미리보기 도구",
-    description: "HTML 코드를 실시간으로 미리보기 해보세요.",
-    images: ["/og-images/html-preview.png"],
-  },
-};
+
 
 import { useState, useRef, useEffect } from 'react';
 import ToolLayout from '@/components/ToolLayout';
