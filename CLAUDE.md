@@ -18,7 +18,7 @@ npm install
 # Run development server with Turbopack
 npm run dev
 
-# Build for production
+# Build for production (static export)
 npm run build
 
 # Start production server

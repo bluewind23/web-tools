@@ -61,7 +61,7 @@ export default function AdminPage() {
     setAuthError('');
 
     try {
-      const response = await fetch('/api/admin/auth', {
+      const response = await fetch('/api/xk9m2p8admin7q3w/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
@@ -85,7 +85,7 @@ export default function AdminPage() {
   const fetchContacts = async (page: number = 1, status: string = 'all', authToken: string = token) => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/admin/contacts?page=${page}&limit=10&status=${status}`, {
+      const response = await fetch(`/api/xk9m2p8admin7q3w/contacts?page=${page}&limit=10&status=${status}`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
         },
@@ -108,7 +108,7 @@ export default function AdminPage() {
 
   const updateContactStatus = async (contactId: string, newStatus: Contact['status']) => {
     try {
-      const response = await fetch('/api/admin/contacts', {
+      const response = await fetch('/api/xk9m2p8admin7q3w/contacts', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export default function AdminPage() {
     }
 
     try {
-      const response = await fetch(`/api/admin/contacts?id=${contactId}`, {
+      const response = await fetch(`/api/xk9m2p8admin7q3w/contacts?id=${contactId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
