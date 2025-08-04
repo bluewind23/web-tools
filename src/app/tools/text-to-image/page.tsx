@@ -1,3 +1,14 @@
+
+export const metadata = {
+  title: "텍스트 → 이미지 변환기",
+  description: "텍스트를 PNG 이미지로 바꾸는 간단한 도구",
+  openGraph: {
+    title: "텍스트 → 이미지 변환기",
+    description: "텍스트를 PNG 이미지로 바꾸는 간단한 도구",
+    images: ["/og-images/text-to-image.png"],
+  },
+};
+
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';

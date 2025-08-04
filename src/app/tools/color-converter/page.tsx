@@ -1,3 +1,14 @@
+
+export const metadata = {
+  title: "컬러 변환기",
+  description: "HEX, RGB, HSL 색상 간 변환 및 미리보기 도구",
+  openGraph: {
+    title: "컬러 변환기",
+    description: "HEX, RGB, HSL 색상 간 변환 및 미리보기 도구",
+    images: ["/og-images/color-converter.png"],
+  },
+};
+
 'use client';
 
 import { useState } from 'react';

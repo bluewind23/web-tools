@@ -1,3 +1,14 @@
+
+export const metadata = {
+  title: "GIF 제작기",
+  description: "여러 이미지를 하나의 GIF로 만들어보세요.",
+  openGraph: {
+    title: "GIF 제작기",
+    description: "여러 이미지를 하나의 GIF로 만들어보세요.",
+    images: ["/og-images/gif-maker.png"],
+  },
+};
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';

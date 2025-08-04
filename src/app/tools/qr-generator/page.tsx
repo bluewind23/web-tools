@@ -1,3 +1,14 @@
+
+export const metadata = {
+  title: "QR 코드 생성기",
+  description: "귀여운 스타일의 QR 코드 생성기",
+  openGraph: {
+    title: "QR 코드 생성기",
+    description: "귀여운 스타일의 QR 코드 생성기",
+    images: ["/og-images/qr-generator.png"],
+  },
+};
+
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -53,7 +64,7 @@ export default function QRGeneratorPage() {
           color: options.color
         });
       }
-      
+
       // Google Analytics 이벤트 추적
       trackEvent('qr_generated', 'tool_usage', 'qr_generator', text.length);
     } catch (error) {
@@ -144,7 +155,7 @@ export default function QRGeneratorPage() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="변환할 텍스트나 URL을 입력하세요..."
-                className="w-full h-24 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                className="w-full h-24 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-gray-700"
               />
               <div className="text-sm text-gray-700 mt-1 font-medium">
                 {text.length}/2953 글자 (권장: 300자 이하)
@@ -172,7 +183,7 @@ export default function QRGeneratorPage() {
             {/* QR 코드 설정 */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-900">⚙️ 설정</h3>
-              
+
               {/* 오류 정정 레벨 */}
               <div>
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
@@ -180,9 +191,9 @@ export default function QRGeneratorPage() {
                 </label>
                 <select
                   value={options.errorCorrectionLevel}
-                  onChange={(e) => setOptions(prev => ({ 
-                    ...prev, 
-                    errorCorrectionLevel: e.target.value as 'L' | 'M' | 'Q' | 'H' 
+                  onChange={(e) => setOptions(prev => ({
+                    ...prev,
+                    errorCorrectionLevel: e.target.value as 'L' | 'M' | 'Q' | 'H'
                   }))}
                   className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
@@ -242,18 +253,18 @@ export default function QRGeneratorPage() {
                     <input
                       type="color"
                       value={options.color.dark}
-                      onChange={(e) => setOptions(prev => ({ 
-                        ...prev, 
-                        color: { ...prev.color, dark: e.target.value } 
+                      onChange={(e) => setOptions(prev => ({
+                        ...prev,
+                        color: { ...prev.color, dark: e.target.value }
                       }))}
                       className="w-8 h-8 border border-gray-300 rounded"
                     />
                     <input
                       type="text"
                       value={options.color.dark}
-                      onChange={(e) => setOptions(prev => ({ 
-                        ...prev, 
-                        color: { ...prev.color, dark: e.target.value } 
+                      onChange={(e) => setOptions(prev => ({
+                        ...prev,
+                        color: { ...prev.color, dark: e.target.value }
                       }))}
                       className="flex-1 p-1 border border-gray-300 rounded text-sm"
                     />
@@ -267,18 +278,18 @@ export default function QRGeneratorPage() {
                     <input
                       type="color"
                       value={options.color.light}
-                      onChange={(e) => setOptions(prev => ({ 
-                        ...prev, 
-                        color: { ...prev.color, light: e.target.value } 
+                      onChange={(e) => setOptions(prev => ({
+                        ...prev,
+                        color: { ...prev.color, light: e.target.value }
                       }))}
                       className="w-8 h-8 border border-gray-300 rounded"
                     />
                     <input
                       type="text"
                       value={options.color.light}
-                      onChange={(e) => setOptions(prev => ({ 
-                        ...prev, 
-                        color: { ...prev.color, light: e.target.value } 
+                      onChange={(e) => setOptions(prev => ({
+                        ...prev,
+                        color: { ...prev.color, light: e.target.value }
                       }))}
                       className="flex-1 p-1 border border-gray-300 rounded text-sm"
                     />
@@ -292,7 +303,7 @@ export default function QRGeneratorPage() {
           <div className="space-y-6">
             <div className="text-center">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">📱 미리보기</h3>
-              
+
               {isGenerating ? (
                 <div className="flex items-center justify-center h-64 bg-gray-100 rounded-lg">
                   <div className="text-gray-800 font-medium">생성 중...</div>
@@ -336,7 +347,7 @@ export default function QRGeneratorPage() {
                       📋 텍스트 복사
                     </button>
                   </div>
-                  
+
                   {/* 크기별 다운로드 */}
                   <div>
                     <div className="text-base text-gray-800 mb-2 font-semibold">다른 크기로 다운로드:</div>

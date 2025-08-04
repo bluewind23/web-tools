@@ -1,3 +1,14 @@
+
+export const metadata = {
+  title: "이모지 & 특수문자 모음",
+  description: "복사해서 바로 쓸 수 있는 이모지와 특수기호 도구",
+  openGraph: {
+    title: "이모지 & 특수문자 모음",
+    description: "복사해서 바로 쓸 수 있는 이모지와 특수기호 도구",
+    images: ["/og-images/emoji-symbols.png"],
+  },
+};
+
 'use client';
 
 import { useState } from 'react';
