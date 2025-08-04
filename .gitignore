@@ -9,8 +9,7 @@
 /build
 
 # Static site generator files
-.next/
-/public/
+# .next/  <-- 이 항목은 빌드 결과물이므로 그대로 둡니다.
 /static/
 
 # Environment variables
