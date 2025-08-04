@@ -1,4 +1,6 @@
 
+'use client';
+
 export const metadata = {
   title: "이모지 & 특수문자 모음",
   description: "복사해서 바로 쓸 수 있는 이모지와 특수기호 도구",
@@ -9,7 +11,6 @@ export const metadata = {
   },
 };
 
-'use client';
 
 import { useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
@@ -84,32 +85,32 @@ export default function EmojiSymbolsPage() {
   const currentCategory = symbolCategories.find(cat => cat.id === selectedCategory);
   const displaySymbols = searchQuery.trim()
     ? Array.from(new Set(symbolCategories.flatMap(cat => {
-        const query = searchQuery.toLowerCase().trim();
-        return cat.symbols.filter(symbol => {
-          // 심볼 자체에서 검색
-          if (symbol.toLowerCase().includes(query)) return true;
-          // 카테고리 이름에서 검색
-          if (cat.name.toLowerCase().includes(query)) return true;
-          // 특별 키워드 검색 (감정, 하트, 손동작 등)
-          const keywords = {
-            '웃음': ['😀', '😁', '😄', '😆', '😂', '🤣', '😊'],
-            '슬픔': ['😢', '😭', '😔', '😞', '😪'],
-            '화남': ['😠', '😡', '🤬', '😤'],
-            '사랑': ['❤️', '💕', '💖', '💗', '💘', '💝', '😍', '🥰'],
-            '하트': ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔'],
-            '박수': ['👏'],
-            '좋아': ['👍', '😊', '😍', '🥰'],
-            '싫어': ['👎', '😤', '😠', '😡']
-          };
-          
-          for (const [keyword, emojis] of Object.entries(keywords)) {
-            if (keyword.includes(query) && emojis.includes(symbol)) {
-              return true;
-            }
+      const query = searchQuery.toLowerCase().trim();
+      return cat.symbols.filter(symbol => {
+        // 심볼 자체에서 검색
+        if (symbol.toLowerCase().includes(query)) return true;
+        // 카테고리 이름에서 검색
+        if (cat.name.toLowerCase().includes(query)) return true;
+        // 특별 키워드 검색 (감정, 하트, 손동작 등)
+        const keywords = {
+          '웃음': ['😀', '😁', '😄', '😆', '😂', '🤣', '😊'],
+          '슬픔': ['😢', '😭', '😔', '😞', '😪'],
+          '화남': ['😠', '😡', '🤬', '😤'],
+          '사랑': ['❤️', '💕', '💖', '💗', '💘', '💝', '😍', '🥰'],
+          '하트': ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔'],
+          '박수': ['👏'],
+          '좋아': ['👍', '😊', '😍', '🥰'],
+          '싫어': ['👎', '😤', '😠', '😡']
+        };
+
+        for (const [keyword, emojis] of Object.entries(keywords)) {
+          if (keyword.includes(query) && emojis.includes(symbol)) {
+            return true;
           }
-          return false;
-        });
-      })))
+        }
+        return false;
+      });
+    })))
     : currentCategory?.symbols || [];
 
   return (

@@ -1,3 +1,4 @@
+'use client';
 
 export const metadata = {
   title: "GIF 제작기",
@@ -9,7 +10,6 @@ export const metadata = {
   },
 };
 
-'use client';
 
 import { useState, useRef, useEffect } from 'react';
 import ToolLayout from '@/components/ToolLayout';

@@ -1,3 +1,4 @@
+'use client';
 
 export const metadata = {
   title: "HTML 미리보기 도구",
@@ -8,8 +9,6 @@ export const metadata = {
     images: ["/og-images/html-preview.png"],
   },
 };
-
-'use client';
 
 import { useState, useRef, useEffect } from 'react';
 import ToolLayout from '@/components/ToolLayout';
@@ -69,7 +68,7 @@ export default function HTMLPreviewPage() {
     </script>
 </body>
 </html>`);
-  
+
   const [debouncedHtmlCode, setDebouncedHtmlCode] = useState(htmlCode);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [previewScale, setPreviewScale] = useState(100);
@@ -116,7 +115,7 @@ export default function HTMLPreviewPage() {
 
   const insertTemplate = (template: string) => {
     let templateCode = '';
-    
+
     switch (template) {
       case 'basic':
         templateCode = `<!DOCTYPE html>
@@ -211,7 +210,7 @@ export default function HTMLPreviewPage() {
 </html>`;
         break;
     }
-    
+
     setHtmlCode(templateCode);
   };
 
@@ -283,11 +282,10 @@ export default function HTMLPreviewPage() {
                 <button
                   key={mode}
                   onClick={() => setViewMode(mode)}
-                  className={`px-3 py-1 rounded text-sm transition-colors ${
-                    viewMode === mode
+                  className={`px-3 py-1 rounded text-sm transition-colors ${viewMode === mode
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
+                    }`}
                 >
                   {mode === 'desktop' ? '🖥️ 데스크톱' : mode === 'tablet' ? '📱 태블릿' : '📱 모바일'}
                 </button>
@@ -370,9 +368,9 @@ export default function HTMLPreviewPage() {
               </div>
             </div>
             <div className="p-4 bg-gray-100" style={{ minHeight: '500px' }}>
-              <div 
+              <div
                 className="mx-auto bg-white shadow-lg rounded overflow-hidden"
-                style={{ 
+                style={{
                   width: dimensions.width,
                   height: viewMode === 'desktop' ? '500px' : dimensions.height,
                   transform: `scale(${previewScale / 100})`,

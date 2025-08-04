@@ -1,3 +1,4 @@
+'use client';
 
 export const metadata = {
   title: "Base64 인코더/디코더",
@@ -8,8 +9,6 @@ export const metadata = {
     images: ["/og-images/base64-converter.png"],
   },
 };
-
-'use client';
 
 import { useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
@@ -40,38 +39,38 @@ function binaryStringToUint8Array(binaryString: string): Uint8Array {
 // 매직 넘버로 이미지 형식 감지
 function detectImageFormat(uint8Array: Uint8Array): string | null {
   if (uint8Array.length < 4) return null;
-  
+
   // PNG: 89 50 4E 47
-  if (uint8Array[0] === 0x89 && uint8Array[1] === 0x50 && 
-      uint8Array[2] === 0x4E && uint8Array[3] === 0x47) {
+  if (uint8Array[0] === 0x89 && uint8Array[1] === 0x50 &&
+    uint8Array[2] === 0x4E && uint8Array[3] === 0x47) {
     return 'image/png';
   }
-  
+
   // JPEG: FF D8 FF
   if (uint8Array[0] === 0xFF && uint8Array[1] === 0xD8 && uint8Array[2] === 0xFF) {
     return 'image/jpeg';
   }
-  
+
   // GIF: 47 49 46 38
-  if (uint8Array[0] === 0x47 && uint8Array[1] === 0x49 && 
-      uint8Array[2] === 0x46 && uint8Array[3] === 0x38) {
+  if (uint8Array[0] === 0x47 && uint8Array[1] === 0x49 &&
+    uint8Array[2] === 0x46 && uint8Array[3] === 0x38) {
     return 'image/gif';
   }
-  
+
   // WebP: 52 49 46 46 ... 57 45 42 50
-  if (uint8Array[0] === 0x52 && uint8Array[1] === 0x49 && 
-      uint8Array[2] === 0x46 && uint8Array[3] === 0x46 &&
-      uint8Array.length > 12 &&
-      uint8Array[8] === 0x57 && uint8Array[9] === 0x45 && 
-      uint8Array[10] === 0x42 && uint8Array[11] === 0x50) {
+  if (uint8Array[0] === 0x52 && uint8Array[1] === 0x49 &&
+    uint8Array[2] === 0x46 && uint8Array[3] === 0x46 &&
+    uint8Array.length > 12 &&
+    uint8Array[8] === 0x57 && uint8Array[9] === 0x45 &&
+    uint8Array[10] === 0x42 && uint8Array[11] === 0x50) {
     return 'image/webp';
   }
-  
+
   // BMP: 42 4D
   if (uint8Array[0] === 0x42 && uint8Array[1] === 0x4D) {
     return 'image/bmp';
   }
-  
+
   return null;
 }
 
@@ -107,7 +106,7 @@ export default function Base64ConverterPage() {
   const handleDecode = () => {
     try {
       setDetectedImage(null); // 이전 감지 결과 초기화
-      
+
       if (input.startsWith('data:image/')) {
         setImagePreview(input);
         setOutput('이미지가 미리보기에 표시됩니다.');
@@ -115,7 +114,7 @@ export default function Base64ConverterPage() {
         // [수정] 개선된 디코딩 로직 사용
         const binaryString = atob(input);
         const uint8Array = binaryStringToUint8Array(binaryString);
-        
+
         // 이미지 형식 감지
         const imageFormat = detectImageFormat(uint8Array);
         if (imageFormat) {
@@ -154,7 +153,7 @@ export default function Base64ConverterPage() {
     setImagePreview('');
     setDetectedImage(null);
   };
-  
+
   const showDetectedImagePreview = () => {
     if (detectedImage) {
       setImagePreview(detectedImage.dataUrl);
@@ -223,8 +222,8 @@ export default function Base64ConverterPage() {
                   clearAll();
                 }}
                 className={`px-6 py-2 rounded-md transition-colors ${mode === 'encode'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-800 hover:text-blue-600 font-semibold'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-800 hover:text-blue-600 font-semibold'
                   }`}
               >
                 🔒 인코딩
@@ -235,8 +234,8 @@ export default function Base64ConverterPage() {
                   clearAll();
                 }}
                 className={`px-6 py-2 rounded-md transition-colors ${mode === 'decode'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-800 hover:text-blue-600 font-semibold'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-800 hover:text-blue-600 font-semibold'
                   }`}
               >
                 🔓 디코딩
@@ -353,7 +352,7 @@ export default function Base64ConverterPage() {
               <div className="text-sm text-gray-700 font-medium mt-2">
                 {output.length} 글자
               </div>
-              
+
               {/* 이미지 감지 알림 */}
               {detectedImage && !imagePreview && (
                 <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">

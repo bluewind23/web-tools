@@ -1,3 +1,4 @@
+'use client';
 
 export const metadata = {
   title: "컬러 변환기",
@@ -8,8 +9,6 @@ export const metadata = {
     images: ["/og-images/color-converter.png"],
   },
 };
-
-'use client';
 
 import { useState } from 'react';
 import ToolLayout from '@/components/ToolLayout';
@@ -121,10 +120,10 @@ export default function ColorConverterPage() {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
       ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16)
-        }
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      }
       : null;
   };
 
@@ -174,9 +173,9 @@ export default function ColorConverterPage() {
     const hue2rgb = (p: number, q: number, t: number): number => {
       if (t < 0) t += 1;
       if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
       return p;
     };
 
@@ -187,9 +186,9 @@ export default function ColorConverterPage() {
     } else {
       const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
       const p = 2 * l - q;
-      r = hue2rgb(p, q, h + 1/3);
+      r = hue2rgb(p, q, h + 1 / 3);
       g = hue2rgb(p, q, h);
-      b = hue2rgb(p, q, h - 1/3);
+      b = hue2rgb(p, q, h - 1 / 3);
     }
 
     return {
@@ -251,7 +250,7 @@ export default function ColorConverterPage() {
   // HSL 입력 처리
   const handleHslChange = (component: 'h' | 's' | 'l', value: number) => {
     const newHsl = { ...colorValues.hsl };
-    
+
     if (component === 'h') {
       newHsl.h = Math.max(0, Math.min(360, value));
     } else {
@@ -329,11 +328,11 @@ export default function ColorConverterPage() {
             {/* 메인 색상 미리보기 */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">🎯 색상 미리보기</h2>
-              <div 
+              <div
                 className="w-full h-48 rounded-lg border-2 border-gray-300 shadow-inner mb-4"
                 style={{ backgroundColor: currentColor }}
               ></div>
-              
+
               {/* 색상 정보 요약 */}
               <div className="bg-gray-50 rounded-lg p-4">
                 <div className="grid grid-cols-2 gap-4 text-sm">
@@ -367,7 +366,7 @@ export default function ColorConverterPage() {
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">🎨 가장 가까운 PANTONE® 색상</h3>
               <div className="flex items-center space-x-4">
-                <div 
+                <div
                   className="w-20 h-20 rounded-lg border-2 border-gray-300"
                   style={{ backgroundColor: closestPantone.hex }}
                 ></div>
@@ -401,18 +400,17 @@ export default function ColorConverterPage() {
             {/* 입력 모드 선택 */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">⚙️ 색상 입력</h2>
-              
+
               <div className="flex mb-6">
                 <div className="bg-gray-100 p-1 rounded-lg flex">
                   {(['hex', 'rgb', 'hsl'] as const).map((mode) => (
                     <button
                       key={mode}
                       onClick={() => setInputMode(mode)}
-                      className={`px-4 py-2 rounded-md transition-colors text-sm font-medium ${
-                        inputMode === mode
+                      className={`px-4 py-2 rounded-md transition-colors text-sm font-medium ${inputMode === mode
                           ? 'bg-blue-600 text-white'
                           : 'text-gray-600 hover:text-blue-600'
-                      }`}
+                        }`}
                     >
                       {mode.toUpperCase()}
                     </button>
@@ -445,7 +443,7 @@ export default function ColorConverterPage() {
                       </button>
                     </div>
                   </div>
-                  
+
                   {/* 색상 피커 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -489,7 +487,7 @@ export default function ColorConverterPage() {
                       </div>
                     </div>
                   ))}
-                  
+
                   <div className="pt-4">
                     <button
                       onClick={() => copyToClipboard(`rgb(${colorValues.rgb.r}, ${colorValues.rgb.g}, ${colorValues.rgb.b})`)}
@@ -553,7 +551,7 @@ export default function ColorConverterPage() {
                       </div>
                     </div>
                   ))}
-                  
+
                   <div className="pt-4">
                     <button
                       onClick={() => copyToClipboard(`hsl(${colorValues.hsl.h}, ${colorValues.hsl.s}%, ${colorValues.hsl.l}%)`)}
